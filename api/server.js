@@ -30,8 +30,23 @@ server.get("/books/:id", (req, res) => {
         })
 })
 
-server.post('/books', (req, res) => {
-    
+server.post('/books', async (req, res) => {
+    try {
+        const book = await Books.insert(req.body)
+        res.status(201).json(book)
+    } catch (err) {
+        console.log(err)
+    }
+})
+
+server.put('/books/:id', async (req, res) => {
+    try {
+        const { id } = req.params
+        const updatedBook = await Books.update(id, req.body)
+        res.status(200).json(updatedBook)
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 module.exports = server;
